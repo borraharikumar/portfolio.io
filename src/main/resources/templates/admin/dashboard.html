@@ -1,0 +1,317 @@
+<!--dashboard.html-->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:replace="~{fragments/header :: header('Dashboard - Hari World')}"></th:block>
+
+<body class="bg-light">
+
+	<th:block th:replace="~{fragments/navbar :: navbar}"></th:block>
+
+	<div class="container mt-2" th:if="${message != null}">
+		<div class="alert alert-dismissible fade show" role="alert"
+			th:classappend="' alert-' + ${messageType != null ? messageType : 'info'}">
+			<span th:text="${message}"></span>
+			<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+		</div>
+	</div>
+
+	<main class="container my-5">
+		<!-- Page Title -->
+		<div class="mb-4">
+			<h1 class="fw-bold">Dashboard</h1>
+			<p class="text-muted">Overview of your content & activity</p>
+		</div>
+		<!-- Post Stats -->
+		<div class="row mb-4">
+			<div class="col-md-4 mb-3">
+				<div class="card text-center shadow-sm">
+					<div class="card-body">
+						<i class="bi bi-file-text fs-2 mb-2"></i>
+						<h5>Total Posts</h5>
+						<h3 th:text="${postCount != null ? postCount : 0}">0</h3>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4 mb-3">
+				<div class="card text-center shadow-sm">
+					<div class="card-body">
+						<i class="bi bi-check-circle fs-2 mb-2 text-success"></i>
+						<h5>Published</h5>
+						<h3 th:text="${publishedCount}">0</h3>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4 mb-3">
+				<div class="card text-center shadow-sm">
+					<div class="card-body">
+						<i class="bi bi-pencil-square fs-2 mb-2 text-warning"></i>
+						<h5>Drafts</h5>
+						<h3 th:text="${draftCount}">0</h3>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- Subscriber Stats -->
+		<div class="row mb-4">
+			<div class="col-md-4 mb-3">
+				<div class="card text-center shadow-sm">
+					<div class="card-body">
+						<i class="bi bi-people fs-2 mb-2 text-primary"></i>
+						<h5>Total Subscribers</h5>
+						<h3 th:text="${subscriberCount}">0</h3>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4 mb-3">
+				<div class="card text-center shadow-sm">
+					<div class="card-body">
+						<i class="bi bi-person-check fs-2 mb-2 text-success"></i>
+						<h5>Active</h5>
+						<h3 th:text="${activeSubscriberCount}">0</h3>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4 mb-3">
+				<div class="card text-center shadow-sm">
+					<div class="card-body">
+						<i class="bi bi-person-x fs-2 mb-2 text-secondary"></i>
+						<h5>Inactive</h5>
+						<h3 th:text="${inactiveSubscriberCount}">0</h3>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- Contact Messages Stats -->
+		<div class="row mb-4">
+			<div class="col-md-4 mb-3">
+				<div class="card text-center shadow-sm border-danger">
+					<div class="card-body">
+						<i class="bi bi-chat-dots fs-2 mb-2 text-danger"></i>
+						<h5>Unread Messages</h5>
+						<h3 th:text="${unreadMessagesCount}">0</h3>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- Admin Stats (SUPERADMIN only) -->
+		<div class="row mb-4" th:if="${#authorization.expression('hasRole(''SUPERADMIN'')')}">
+			<div class="col-md-4 mb-3">
+				<div class="card text-center shadow-sm">
+					<div class="card-body">
+						<i class="bi bi-person-badge fs-2 mb-2 text-dark"></i>
+						<h5>Total Admins</h5>
+						<h3 th:text="${adminCount != null ? adminCount : 0}">0</h3>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- Quick Actions -->
+		<div class="mb-5">
+			<h5 class="mb-3 fw-semibold">Quick Actions</h5>
+			<div class="row g-3">
+				<div class="col-md-3 col-sm-6">
+					<a href="/admin/posts/new" class="text-decoration-none">
+						<div class="card h-100 shadow-sm border-primary">
+							<div class="card-body text-center">
+								<i class="bi bi-plus-circle fs-2 text-primary mb-2"></i>
+								<h6 class="fw-bold mb-1">New Post</h6>
+								<small class="text-muted">Create a new article</small>
+							</div>
+						</div>
+					</a>
+				</div>
+				<div class="col-md-3 col-sm-6">
+					<a href="/admin/posts" class="text-decoration-none">
+						<div class="card h-100 shadow-sm">
+							<div class="card-body text-center">
+								<i class="bi bi-list fs-2 mb-2"></i>
+								<h6 class="fw-bold mb-1">Manage Posts</h6>
+								<small class="text-muted">Edit or publish posts</small>
+							</div>
+						</div>
+					</a>
+				</div>
+				<div class="col-md-3 col-sm-6">
+					<a href="/admin/banners/new" class="text-decoration-none">
+						<div class="card h-100 shadow-sm">
+							<div class="card-body text-center">
+								<i class="bi bi-image fs-2 mb-2"></i>
+								<h6 class="fw-bold mb-1">Add Banner</h6>
+								<small class="text-muted">Create homepage banner</small>
+							</div>
+						</div>
+					</a>
+				</div>
+				<div class="col-md-3 col-sm-6">
+					<a href="/admin/banners" class="text-decoration-none">
+						<div class="card h-100 shadow-sm">
+							<div class="card-body text-center">
+								<i class="bi bi-images fs-2 mb-2"></i>
+								<h6 class="fw-bold mb-1">Manage Banners</h6>
+								<small class="text-muted">Edit or reorder banners</small>
+							</div>
+						</div>
+					</a>
+				</div>
+				<div class="col-md-3 col-sm-6">
+					<a href="/admin/subscribers" class="text-decoration-none">
+						<div class="card h-100 shadow-sm">
+							<div class="card-body text-center">
+								<i class="bi bi-envelope-heart fs-2 mb-2"></i>
+								<h6 class="fw-bold mb-1">
+									Subscribers
+									<span class="badge bg-primary ms-1" th:text="${subscriberCount}">0</span>
+								</h6>
+								<small class="text-muted">View & manage subscribers</small>
+							</div>
+						</div>
+					</a>
+				</div>
+				<div class="col-md-3 col-sm-6">
+					<a href="/admin/messages" class="text-decoration-none">
+						<div class="card h-100 shadow-sm">
+							<div class="card-body text-center">
+								<i class="bi bi-chat-text fs-2 mb-2"></i>
+								<h6 class="fw-bold mb-1">
+									Messages
+									<span class="badge bg-danger ms-1" th:if="${unreadMessagesCount > 0}"
+										th:text="${unreadMessagesCount}">0</span>
+								</h6>
+								<small class="text-muted">View contact messages</small>
+							</div>
+						</div>
+					</a>
+				</div>
+				<div class="col-md-3 col-sm-6" th:if="${#authorization.expression('hasRole(''SUPERADMIN'')')}">
+					<a href="/admin/profile" class="text-decoration-none">
+						<div class="card h-100 shadow-sm">
+							<div class="card-body text-center">
+								<i class="bi bi-person-circle fs-2 mb-2"></i>
+								<h6 class="fw-bold mb-1">Edit Profile</h6>
+								<small class="text-muted">Update personal details</small>
+							</div>
+						</div>
+					</a>
+				</div>
+				<div class="col-md-3 col-sm-6">
+					<a href="/admin/change-password" class="text-decoration-none">
+						<div class="card h-100 shadow-sm">
+							<div class="card-body text-center">
+								<i class="bi bi-shield-lock fs-2 mb-2"></i>
+								<h6 class="fw-bold mb-1">Change Password</h6>
+								<small class="text-muted">Update your login password</small>
+							</div>
+						</div>
+					</a>
+				</div>
+				<!-- Add Admin -->
+				<div class="col-md-3 col-sm-6" th:if="${#authorization.expression('hasRole(''SUPERADMIN'')')}">
+					<a href="/admin/admin/new" class="text-decoration-none">
+						<div class="card h-100 shadow-sm">
+							<div class="card-body text-center">
+								<i class="bi bi-person-plus fs-2 mb-2"></i>
+								<h6 class="fw-bold mb-1">Add Admin</h6>
+								<small class="text-muted">Create admin account</small>
+							</div>
+						</div>
+					</a>
+				</div>
+				<!-- Manage Admins -->
+				<div class="col-md-3 col-sm-6" th:if="${#authorization.expression('hasRole(''SUPERADMIN'')')}">
+					<a href="/admin/admins" class="text-decoration-none">
+						<div class="card h-100 shadow-sm">
+							<div class="card-body text-center">
+								<i class="bi bi-people-fill fs-2 mb-2 text-dark"></i>
+								<h6 class="fw-bold mb-1">Manage Admins</h6>
+								<small class="text-muted">View & manage admin users</small>
+							</div>
+						</div>
+					</a>
+				</div>
+			</div>
+		</div>
+		<!-- Latest Unread Messages -->
+		<div class="card shadow-sm mt-5">
+			<div class="card-header d-flex justify-content-between align-items-center">
+				<h5 class="mb-0">Latest Unread Messages</h5>
+				<a href="/admin/messages" class="btn btn-sm btn-outline-secondary">View All</a>
+			</div>
+			<div class="table-responsive">
+				<table class="table mb-0">
+					<thead>
+						<tr>
+							<th>Name</th>
+							<th>Email</th>
+							<th>Message</th>
+							<th>Received</th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="msg : ${latestUnreadMessages}">
+							<td th:text="${msg.name}">Name</td>
+							<td><a th:href="'mailto:' + ${msg.email}" th:text="${msg.email}">email</a></td>
+							<td th:text="${#strings.abbreviate(msg.message, 40)}">Message</td>
+							<td th:text="${#temporals.format(msg.createdAt,'dd MMM yyyy HH:mm')}">Date</td>
+							<td>
+								<a th:href="@{'/admin/messages/reply/' + ${msg.id}}"
+									class="btn btn-sm btn-outline-primary">
+									<i class="bi bi-reply"></i> Reply
+								</a>
+								<a th:href="@{'/admin/messages/read/' + ${msg.id}}"
+									class="btn btn-sm btn-outline-success">
+									Mark Read
+								</a>
+							</td>
+						</tr>
+						<tr th:if="${#lists.isEmpty(latestUnreadMessages)}">
+							<td colspan="5" class="text-center text-muted py-3">No unread messages 🎉 </td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<!-- Latest Posts -->
+		<div class="card shadow-sm mt-5">
+			<div class="card-header">
+				<h5 class="mb-0">Latest Posts</h5>
+			</div>
+			<div class="table-responsive">
+				<table class="table mb-0">
+					<thead>
+						<tr>
+							<th>Title</th>
+							<th>Status</th>
+							<th>Created</th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="post : ${latestPosts}">
+							<td th:text="${post.title}">Title</td>
+							<td>
+								<span class="badge bg-success" th:if="${post.published}">Published</span>
+								<span class="badge bg-warning text-dark" th:if="${!post.published}">Draft</span>
+							</td>
+							<td th:text="${#temporals.format(post.createdAt,'dd MMM yyyy')}">Date</td>
+							<td>
+								<a th:href="@{'/admin/posts/edit/' + ${post.slug}}"
+									class="btn btn-sm btn-outline-primary">
+									Edit
+								</a>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</main>
+
+	<th:block th:replace="~{fragments/footer :: footer}"></th:block>
+
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>

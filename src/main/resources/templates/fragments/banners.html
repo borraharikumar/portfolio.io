@@ -1,0 +1,33 @@
+<!--banners.html-->
+<div th:fragment="banners" id="bannerCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel"
+	data-bs-interval="5000">
+	<!-- Indicators -->
+	<div class="carousel-indicators">
+		<button type="button" th:each="banner, stat : ${banners}" data-bs-target="#bannerCarousel"
+			th:data-bs-slide-to="${stat.index}" th:classappend="${stat.index == 0} ? 'active'">
+		</button>
+	</div>
+	<!-- Slides -->
+	<div class="carousel-inner">
+		<div class="carousel-item" th:each="banner, stat : ${banners}" th:classappend="${stat.index == 0} ? ' active'"
+			th:attr="aria-label=${banner.title}">
+			<!-- 21:9 ratio wrapper -->
+			<div class="ratio ratio-21x9">
+				<!-- Background + centering -->
+				<div class="d-flex align-items-center justify-content-center bg-dark">
+					<!-- Content -->
+					<div class="container text-center text-light">
+						<div th:utext="${banner.content}"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Controls -->
+	<button class="carousel-control-prev" type="button" data-bs-target="#bannerCarousel" data-bs-slide="prev">
+		<span class="carousel-control-prev-icon"></span>
+	</button>
+	<button class="carousel-control-next" type="button" data-bs-target="#bannerCarousel" data-bs-slide="next">
+		<span class="carousel-control-next-icon"></span>
+	</button>
+</div>

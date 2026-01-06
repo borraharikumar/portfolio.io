@@ -1,0 +1,51 @@
+<!--subscribe.html-->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:replace="~{fragments/header :: header('Subscribe - Hari World')}"></th:block>
+
+<body class="bg-light">
+
+	<th:block th:replace="~{fragments/navbar :: navbar}"></th:block>
+	
+	<main class="container my-5">
+	    <div class="row justify-content-center">
+	        <div class="col-md-6 col-lg-4">
+	            <div class="card shadow-sm">
+	                <div class="card-body">
+	                    <h3 class="text-center mb-2">Subscribe</h3>
+	                    <p class="text-center text-muted mb-4">Get updates when new posts are published</p>
+	                    <form th:action="@{/subscribe}" method="post">
+	                        <!-- Name (Optional) -->
+	                        <div class="mb-3">
+	                            <label class="form-label">Name</label>
+	                            <div class="input-group">
+	                                <span class="input-group-text"><i class="bi bi-person"></i></span>
+	                                <input type="text" name="name" class="form-control" placeholder="Your name">
+	                            </div>
+	                        </div>
+	                        <!-- Email -->
+	                        <div class="mb-3">
+	                            <label class="form-label">Email</label>
+	                            <div class="input-group">
+	                                <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+	                                <input type="email" name="email" class="form-control" placeholder="Enter your email" required>
+	                            </div>
+	                        </div>
+	                        <!-- Submit -->
+	                        <div class="d-grid mt-4">
+	                            <button type="submit" class="btn btn-primary"> Subscribe</button>
+	                        </div>
+	                    </form>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+	</main>
+	
+	<th:block th:replace="~{fragments/footer :: footer}"></th:block>
+	
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

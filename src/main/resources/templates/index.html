@@ -1,0 +1,55 @@
+<!--index.html-->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:replace="~{fragments/header :: header('Home - Hari World')}"></th:block>
+
+<body>
+	<th:block th:replace="~{fragments/navbar :: navbar}"></th:block>
+
+	<div class="container mt-2" th:if="${message != null}">
+		<div class="alert alert-dismissible fade show" role="alert"
+			th:classappend="' alert-' + ${messageType != null ? messageType : 'info'}">
+			<span th:text="${message}"></span>
+			<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+		</div>
+	</div>
+
+	<div th:if="${banners != null and !#lists.isEmpty(banners)}">
+		<th:block th:replace="~{fragments/banners :: banners}"></th:block>
+	</div>
+
+	<main class="container my-5">
+		<!-- Section title -->
+		<div class="d-flex justify-content-between align-items-center mb-4">
+			<h2 class="mb-0">Latest Posts</h2>
+			<a href="/posts" class="btn btn-outline-primary btn-sm">See all</a>
+		</div>
+		<!-- Posts grid -->
+		<div class="row">
+			<div class="col-md-6 col-lg-4 mb-4" th:each="post : ${posts}">
+				<div class="card h-100 shadow-sm">
+					<!-- Thumbnail (optional but recommended) -->
+					<img th:if="${post.thumnailUrl != null}" th:src="${post.thumnailUrl}" class="card-img-top"
+						alt="Post thumbnail">
+					<div class="card-body">
+						<h5 class="card-title" th:text="${post.title}">Post title</h5>
+						<p class="card-text" th:text="${post.summary}">Post summary</p>
+					</div>
+					<div class="card-footer bg-transparent border-0 d-flex justify-content-between align-items-center">
+						<small class="text-muted" th:text="${#temporals.format(post.createdAt, 'dd MMM yyyy')}">
+							Date
+						</small>
+						<a th:href="@{'/post/' + ${post.slug}}" class="btn btn-sm btn-primary">Read more</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</main>
+
+	<th:block th:replace="~{fragments/footer :: footer}"></th:block>
+
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

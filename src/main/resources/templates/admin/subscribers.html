@@ -1,0 +1,85 @@
+<!--subscribers.html-->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:replace="~{fragments/header :: header('Subscribers - Hari World')}"></th:block>
+
+<body class="bg-light">
+
+	<th:block th:replace="~{fragments/navbar :: navbar}"></th:block>
+
+	<div class="container mt-2" th:if="${message != null}">
+		<div class="alert alert-dismissible fade show" role="alert"
+			th:classappend="' alert-' + ${messageType != null ? messageType : 'info'}">
+			<span th:text="${message}"></span>
+			<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+		</div>
+	</div>
+	
+	<main class="container my-5">
+	    <!-- Page Header -->
+	    <div class="mb-4">
+	        <h1 class="fw-bold">Subscribers</h1>
+	        <p class="text-muted"> Manage email subscribers and notifications</p>
+	    </div>
+	    <!-- Subscribers Card -->
+	    <div class="card shadow-sm">
+	        <div class="card-header d-flex justify-content-between align-items-center">
+	            <h5 class="mb-0">All Subscribers</h5>
+	            <span class="badge bg-primary" th:text="${#lists.size(subscribers)} + ' total'">0 total</span>
+	        </div>
+	        <div class="table-responsive">
+	            <table class="table table-hover mb-0 align-middle">
+	                <thead class="table-light">
+	                    <tr>
+	                        <th>#</th>
+	                        <th>Name</th>
+	                        <th>Email</th>
+	                        <th>Status</th>
+	                        <th>Subscribed On</th>
+	                        <th class="text-end">Action</th>
+	                    </tr>
+	                </thead>
+	                <tbody>
+	                    <tr th:each="sub, stat : ${subscribers}">
+	                        <td th:text="${stat.count}">1</td>
+	                        <td th:text="${sub.name}">Name</td>
+	                        <td th:text="${sub.email}">email@example.com</td>
+	                        <td>
+	                            <span class="badge bg-success" th:if="${sub.active}">Active</span>
+	                            <span class="badge bg-secondary" th:if="${!sub.active}">Inactive</span>
+	                        </td>
+	                        <td th:text="${#temporals.format(sub.subscribedAt,'dd MMM yyyy')}">Date</td>
+	                        <td class="text-end">
+	                            <!-- Deactivate -->
+	                            <a th:if="${sub.active}" th:href="@{'/admin/subscribers/deactivate/' + ${sub.email}}"
+	                               class="btn btn-sm btn-outline-danger">
+	                                Deactivate
+	                            </a>
+	                            <!-- Activate -->
+	                            <a th:if="${!sub.active}" th:href="@{'/admin/subscribers/activate/' + ${sub.email}}"
+	                               class="btn btn-sm btn-outline-success">
+	                                Activate
+	                            </a>
+	                        </td>
+	                    </tr>
+	                    <tr th:if="${#lists.isEmpty(subscribers)}">
+	                        <td colspan="6" class="text-center py-4 text-muted">No subscribers found</td>
+	                    </tr>
+	                </tbody>
+	            </table>
+	        </div>
+	    </div>
+	    <!-- Back Button -->
+	    <div class="mt-4">
+	        <a href="/admin/dashboard" class="btn btn-outline-secondary">← Back to Dashboard</a>
+	    </div>
+	</main>
+
+	<th:block th:replace="~{fragments/footer :: footer}"></th:block>
+
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,63 @@
+<!--navbar.html-->
+<nav th:fragment="navbar" class="navbar navbar-expand-lg navbar-dark bg-dark"
+	xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
+	<div class="container">
+		<!-- Brand -->
+		<a class="navbar-brand d-flex align-items-center" href="/">
+			<img th:src="${profile.profilePicUrl}" alt="Profile Photo" width="32" height="32"
+				class="rounded-circle me-2">
+			<span th:text="${profile.name}">Profile</span>
+		</a>
+		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarNav">
+			<ul class="navbar-nav ms-auto">
+				<!-- Public -->
+				<li class="nav-item">
+					<a class="nav-link" th:classappend="${currentPath == '/'} ? ' active'" href="/">Home</a>
+				</li>
+				<!-- Admin Dashboard -->
+				<li class="nav-item">
+					<a class="nav-link" th:classappend="${currentPath.startsWith('/admin')} ? ' active'"
+						href="/admin/dashboard">
+						Dashboard
+					</a>
+				</li>
+				<!-- About -->
+				<li class="nav-item">
+					<a class="nav-link" th:classappend="${currentPath == '/about'} ? ' active'" href="/about">
+						About me
+					</a>
+				</li>
+				<!-- Posts -->
+				<li class="nav-item">
+					<a class="nav-link" href="/posts"
+						th:classappend="${currentPath.startsWith('/posts') or currentPath.startsWith('/post')} ? ' active'">
+						See Posts
+					</a>
+				</li>
+				<!-- Contact -->
+				<li class="nav-item">
+					<a class="nav-link" th:classappend="${currentPath == '/contact'} ? ' active'" href="/contact">
+						Contact me
+					</a>
+				</li>
+				<!-- Contact -->
+				<li class="nav-item">
+					<a class="nav-link" th:classappend="${currentPath == '/subscribe'} ? ' active'" href="/subscribe">
+						Subscribe
+					</a>
+				</li>
+				<!-- Login (only if NOT logged in) -->
+				<li class="nav-item" sec:authorize="isAnonymous()">
+					<a class="nav-link btn btn-sm btn-success" href="/login">Login</a>
+				</li>
+				<!-- Logout (only if logged in) -->
+				<li class="nav-item" sec:authorize="isAuthenticated()">
+					<a class="nav-link btn btn-sm btn-danger" href="/logout">Logout</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+</nav>

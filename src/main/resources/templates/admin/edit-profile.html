@@ -1,0 +1,128 @@
+<!--edit-profile.html-->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:replace="~{fragments/header :: header('Edit Profile - Hari World')}"></th:block>
+
+<script src="https://cdn.tiny.cloud/1/tleqig73x60lulhrulz6chs0z72w6lu1ze7pammuuvc3lhhr/tinymce/6/tinymce.min.js"
+	referrerpolicy="origin"></script>
+
+<script>
+	tinymce.init({
+		selector: '#contentEditor',
+		height: 450,
+		plugins: 'image link lists code preview',
+		toolbar:
+			'undo redo | formatselect | ' +
+			'bold italic underline | alignleft aligncenter alignright | ' +
+			'bullist numlist | link image | code preview',
+
+		images_upload_url: '/admin/images/upload',
+		automatic_uploads: true,
+		images_reuse_filename: true
+	});
+</script>
+
+<body class="bg-light">
+
+	<th:block th:replace="~{fragments/navbar :: navbar}"></th:block>
+
+	<div class="container mt-2" th:if="${message != null}">
+		<div class="alert alert-dismissible fade show" role="alert"
+			th:classappend="' alert-' + ${messageType != null ? messageType : 'info'}">
+			<span th:text="${message}"></span>
+			<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+		</div>
+	</div>
+
+	<main class="container my-5">
+		<!-- Page Header -->
+		<div class="mb-4">
+			<h1 class="fw-bold">Edit Profile</h1>
+			<p class="text-muted">
+				Update your public profile information
+			</p>
+		</div>
+		<!-- Profile Form -->
+		<form th:action="@{/admin/profile}" th:object="${profile}" method="post" enctype="multipart/form-data">
+			<!-- Hidden ID -->
+			<input type="hidden" th:field="*{id}" />
+			<div class="row">
+				<!-- Main Info -->
+				<div class="col-lg-8">
+					<!-- Name -->
+					<div class="mb-3">
+						<label class="form-label">Name</label>
+						<input type="text" th:field="*{name}" class="form-control" required>
+					</div>
+					<!-- Tagline -->
+					<div class="mb-3">
+						<label class="form-label">Tagline</label>
+						<input type="text" th:field="*{tagline}" class="form-control" required>
+					</div>
+					<!-- Bio -->
+					<div class="mb-3">
+						<label class="form-label">Bio</label>
+						<textarea th:field="*{bio}" id="contentEditor" class="form-control" rows="10"></textarea>
+					</div>
+				</div>
+				<!-- Side Info -->
+				<div class="col-lg-4">
+
+					<div class="card shadow-sm">
+						<div class="card-body">
+							<h6 class="fw-bold mb-3">Contact & Social</h6>
+							<!-- Email -->
+							<div class="mb-3">
+								<label class="form-label">Email</label>
+								<input type="email" th:field="*{email}" class="form-control">
+							</div>
+							<!-- Mobile -->
+							<div class="mb-3">
+								<label class="form-label">Mobile</label>
+								<input type="text" th:field="*{mobile}" class="form-control">
+							</div>
+							<!-- LinkedIn -->
+							<div class="mb-3">
+								<label class="form-label">LinkedIn</label>
+								<input type="text" th:field="*{linkedin}" class="form-control">
+							</div>
+							<!-- Instagram -->
+							<div class="mb-3">
+								<label class="form-label">Instagram</label>
+								<input type="text" th:field="*{instagram}" class="form-control">
+							</div>
+							<!-- Twitter -->
+							<div class="mb-3">
+								<label class="form-label">Twitter</label>
+								<input type="text" th:field="*{twitter}" class="form-control">
+							</div>
+							<!-- Profile Picture -->
+							<div class="mb-3">
+								<label class="form-label">Profile Picture URL</label>
+								<input type="file" name="profilePic" class="form-control"
+									placeholder="Browse profile pic">
+							</div>
+							<!-- Actions -->
+							<div class="d-grid gap-2 mt-4">
+								<button type="submit" class="btn btn-primary">
+									Save Profile
+								</button>
+								<a href="/admin/dashboard" class="btn btn-outline-secondary">
+									Cancel
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
+	</main>
+
+	<th:block th:replace="~{fragments/footer :: footer}"></th:block>
+
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>

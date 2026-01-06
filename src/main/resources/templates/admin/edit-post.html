@@ -1,0 +1,136 @@
+<!--edit-post.html-->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:replace="~{fragments/header :: header('Edit Post - Hari World')}"></th:block>
+
+<!-- TinyMCE -->
+<script src="https://cdn.tiny.cloud/1/tleqig73x60lulhrulz6chs0z72w6lu1ze7pammuuvc3lhhr/tinymce/6/tinymce.min.js"
+        referrerpolicy="origin"></script>
+
+<script>
+    tinymce.init({
+        selector: '#contentEditor',
+        height: 450,
+        plugins: 'image link lists code preview',
+        toolbar:
+            'undo redo | formatselect | ' +
+            'bold italic underline | alignleft aligncenter alignright | ' +
+            'bullist numlist | link image | code preview',
+        images_upload_url: '/admin/images/upload',
+        automatic_uploads: true,
+        images_reuse_filename: true
+    });
+</script>
+
+<body class="bg-light">
+
+	<th:block th:replace="~{fragments/navbar :: navbar}"></th:block>
+	
+	<!-- Flash Message -->
+	<div class="container mt-2" th:if="${message != null}">
+	    <div class="alert alert-dismissible fade show"
+	         role="alert"
+	         th:classappend="' alert-' + ${messageType != null ? messageType : 'info'}">
+	        <span th:text="${message}"></span>
+	        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+	    </div>
+	</div>
+	
+	<main class="container my-5">
+	    <!-- Page Title -->
+	    <div class="mb-4">
+	        <h1 class="fw-bold">Edit Post</h1>
+	        <p class="text-muted">Update your article content</p>
+	    </div>
+	    <!-- Edit Post Form -->
+	    <form th:action="@{/admin/posts/edit}" th:object="${post}" method="post" enctype="multipart/form-data">
+	        <!-- IMPORTANT: ID -->
+	        <input type="hidden" th:field="*{id}" />
+	        <div class="row">
+	            <!-- Main Content -->
+	            <div class="col-lg-8">
+	                <!-- Title -->
+	                <div class="mb-3">
+	                    <label class="form-label">Title</label>
+	                    <input type="text" th:field="*{title}" class="form-control" required readonly>
+	                </div>
+	                <!-- Slug (Readonly) -->
+	                <div class="mb-3">
+	                    <label class="form-label">Slug</label>
+	                    <input type="text" th:field="*{slug}" class="form-control" readonly>
+	                    <div class="form-text">
+	                        URL: <code>/post/<span th:text="${post.slug}"></span></code>
+	                    </div>
+	                </div>
+	                <!-- Summary -->
+	                <div class="mb-3">
+	                    <label class="form-label">Summary</label>
+	                    <textarea th:field="*{summary}" class="form-control" rows="3" required></textarea>
+	                </div>
+	                <!-- Content -->
+	                <div class="mb-3">
+	                    <label class="form-label">Content</label>
+	                    <textarea th:field="*{content}" id="contentEditor" class="form-control"></textarea>
+	                    <div class="form-text"> Rich content supported (HTML, images, links) </div>
+	                </div>
+	            </div>
+	            <!-- Sidebar -->
+	            <div class="col-lg-4">
+	                <!-- Thumbnail -->
+	                <div class="mb-3">
+	                    <label class="form-label">Thumbnail URL</label>
+	                    <input type="file" name="thumbnail" class="form-control" placeholder="Browse thumbnail">
+						<input type="hidden" th:field="*{thumnailUrl}" />
+	                </div>
+	                <!-- Publish Status -->
+	                <div class="mb-3">
+	                    <label class="form-label">Status</label>
+	                    <select th:field="*{published}" class="form-select">
+	                        <option th:value="true">Published</option>
+	                        <option th:value="false">Draft</option>
+	                    </select>
+	                </div>
+	                <!-- Meta -->
+	                <div class="mb-3 text-muted small">
+	                    <p class="mb-1">
+	                        Created:
+	                        <strong th:text="${#temporals.format(post.createdAt,'dd MMM yyyy')}"></strong>
+	                    </p>
+	                    <p class="mb-0">
+	                        Last Updated:
+	                        <strong th:text="${#temporals.format(post.updatedAt,'dd MMM yyyy')}"></strong>
+	                    </p>
+	                </div>
+	                <!-- Actions -->
+	                <div class="d-grid gap-2 mt-4">
+	                    <button type="submit" class="btn btn-primary"> Update Post </button>
+	                    <a href="/admin/dashboard" class="btn btn-outline-secondary"> Cancel </a>
+	                </div>
+	            </div>
+	
+	        </div>
+	    </form>
+	</main>
+	
+	<th:block th:replace="~{fragments/footer :: footer}"></th:block>
+	
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+	<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+	<script>
+	    $(document).ready(function () {
+	        $('#title').on('keyup blur', function () {
+	            let title = $(this).val();
+	            let slug = title
+	                .toLowerCase()                   // lowercase
+	                .trim()                          // remove leading/trailing spaces
+	                .replace(/[^a-z0-9\s-]/g, '')    // remove special chars
+	                .replace(/\s+/g, '-')            // spaces → hyphen
+	                .replace(/-+/g, '-');             // collapse multiple hyphens
+	            $('#slug').val(slug);
+	        });
+	    });
+	</script>
+
+</body>
+</html>

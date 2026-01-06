@@ -1,0 +1,51 @@
+<!--reply-message.html-->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:replace="~{fragments/header :: header('Reply Message - Hari World')}"></th:block>
+
+<body class="bg-light">
+
+	<th:block th:replace="~{fragments/navbar :: navbar}"></th:block>
+
+	<div class="container mt-2" th:if="${message != null}">
+		<div class="alert alert-dismissible fade show" role="alert"
+			th:classappend="' alert-' + ${messageType != null ? messageType : 'info'}">
+			<span th:text="${message}"></span>
+			<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+		</div>
+	</div>
+
+	<main class="container my-5">
+		<div class="row justify-content-center">
+			<div class="col-md-6">
+				<div class="card shadow-sm">
+					<div class="card-body">
+						<h4 class="fw-bold mb-3">Reply to Message</h4>
+						<p class="text-muted">Original message from <strong th:text="${replyMessage.contactMessage.name}">Name</strong></p>
+						<p class="border p-2 rounded bg-light" th:text="${replyMessage.contactMessage.message}">Original Message</p>
+						<form th:action="@{/admin/messages/reply}" method="post" th:object="${replyMessage}">
+							<input type="hidden" th:field="*{contactMessage}" th:value="${replyMessage.contactMessage}" />
+							<div class="mb-3">
+								<label class="form-label">Reply</label>
+								<textarea th:field="*{content}" class="form-control" rows="5" required></textarea>
+							</div>
+
+							<div class="d-grid gap-2 mt-3">
+								<button type="submit" class="btn btn-primary">Send Reply</button>
+								<a href="/admin/messages" class="btn btn-outline-secondary">Cancel</a>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</main>
+
+	<th:block th:replace="~{fragments/footer :: footer}"></th:block>
+
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>

@@ -23,7 +23,7 @@ public class SecurityConfig {
 			"/reset-password/**", "/subscribe", "/unsubscribe" };
 
 	@Bean
-	SecurityFilterChain securityFilterChain(HttpSecurity security) {
+	SecurityFilterChain securityFilterChain(HttpSecurity security) throws Exception {
 		security.csrf(csrf -> csrf.disable())
 				.authorizeHttpRequests(req -> req.requestMatchers(publicUrls).permitAll().anyRequest().authenticated())
 				.userDetailsService(userDetailsService)

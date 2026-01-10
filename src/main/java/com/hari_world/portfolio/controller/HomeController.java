@@ -13,13 +13,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.hari_world.portfolio.dto.LoginRequest;
 import com.hari_world.portfolio.entity.ContactMessage;
-import com.hari_world.portfolio.entity.Subscriber;
 import com.hari_world.portfolio.service.IBannerService;
 import com.hari_world.portfolio.service.IContactService;
 import com.hari_world.portfolio.service.ILoginCredentialsService;
 import com.hari_world.portfolio.service.IPostService;
 import com.hari_world.portfolio.service.IProfileService;
-import com.hari_world.portfolio.service.ISubscriberService;
 
 @Controller
 @RequestMapping
@@ -33,8 +31,6 @@ public class HomeController {
 	private IPostService postService;
 	@Autowired
 	private ILoginCredentialsService credentialsService;
-	@Autowired
-	private ISubscriberService subscriberService;
 	@Autowired
 	private IContactService contactService;
 
@@ -136,50 +132,6 @@ public class HomeController {
 		attributes.addFlashAttribute("message", "Password reset successful.");
 		attributes.addFlashAttribute("messageType", "success");
 		return "redirect:/login";
-	}
-
-	@GetMapping("/subscribe")
-	public String showSubscriptionPage(Model model) {
-		model.addAttribute("profile", profileService.getProfileData());
-		return "subscribe";
-	}
-
-	@PostMapping("/subscribe")
-	public String subscribe(@RequestParam String email, @RequestParam String name, RedirectAttributes attributes) {
-
-		if (subscriberService.existsByEmail(email)) {
-			if (subscriberService.getSubscriber(email).getActive()) {
-				attributes.addFlashAttribute("message", "You are already subscribed & active..!");
-				attributes.addFlashAttribute("messageType", "info");
-				return "redirect:/";
-			}
-			subscriberService.subscribe(email);
-			attributes.addFlashAttribute("message", "You are already subscribed & activated now..!");
-			attributes.addFlashAttribute("messageType", "info");
-			return "redirect:/";
-		}
-		Subscriber subscriber = new Subscriber();
-		subscriber.setName(name);
-		subscriber.setEmail(email);
-		subscriber.setActive(true);
-		subscriberService.saveSubscriber(subscriber);
-
-		attributes.addFlashAttribute("message", "Thanks for subscribing..!");
-		attributes.addFlashAttribute("messageType", "success");
-		return "redirect:/";
-	}
-
-	@GetMapping("/unsubscribe")
-	public String unsubscribe(@RequestParam String email, RedirectAttributes attributes) {
-		if (subscriberService.existsByEmail(email)) {
-			subscriberService.unsubscribe(email);
-			attributes.addFlashAttribute("message", "You have been unsubscribed...!");
-			attributes.addFlashAttribute("messageType", "info");
-			return "redirect:/";
-		}
-		attributes.addFlashAttribute("message", "You have not yet subscribed...!");
-		attributes.addFlashAttribute("messageType", "danger");
-		return "redirect:/";
 	}
 
 }

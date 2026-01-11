@@ -47,6 +47,7 @@
 	    <form th:action="@{/admin/posts/edit}" th:object="${post}" method="post" enctype="multipart/form-data">
 	        <!-- IMPORTANT: ID -->
 	        <input type="hidden" th:field="*{id}" />
+			<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 	        <div class="row">
 	            <!-- Main Content -->
 	            <div class="col-lg-8">

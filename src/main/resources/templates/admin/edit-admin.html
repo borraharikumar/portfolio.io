@@ -27,7 +27,7 @@
 			<!-- Hidden ID -->
 			<input type="hidden" th:field="*{id}" />
 			<input type="hidden" th:field="*{profile.id}" />
-
+			<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 			<div class="row">
 				<!-- Login Details -->
 				<div class="col-lg-6">

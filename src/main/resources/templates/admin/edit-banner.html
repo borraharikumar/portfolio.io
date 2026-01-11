@@ -27,6 +27,7 @@
 	    <form th:action="@{/admin/banners/edit}" th:object="${banner}" method="post">
 	        <!-- IMPORTANT: Banner ID -->
 	        <input type="hidden" th:field="*{id}" />
+			<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 	        <div class="row">
 	            <!-- Main Content -->
 	            <div class="col-lg-8">

@@ -24,12 +24,14 @@ public class SecurityConfig {
 
 	@Bean
 	SecurityFilterChain securityFilterChain(HttpSecurity security) throws Exception {
-		security.csrf(csrf -> csrf.disable())
+		security.csrf(csrf -> csrf.ignoringRequestMatchers("/admin/**"))
 				.authorizeHttpRequests(req -> req.requestMatchers(publicUrls).permitAll().anyRequest().authenticated())
 				.userDetailsService(userDetailsService)
 				.formLogin(form -> form.loginPage("/login").defaultSuccessUrl("/admin/dashboard", true).permitAll())
 				.exceptionHandling(ex -> ex.accessDeniedPage("/access-denied"))
-				.logout(logout -> logout.logoutSuccessUrl("/"));
+				.logout(logout -> logout.logoutUrl("/logout").logoutSuccessUrl("/"))
+				.rememberMe(remember -> remember.key("secure-remember-me-key").tokenValiditySeconds(7 * 24 * 60 * 60))
+				.sessionManagement(session -> session.maximumSessions(1).maxSessionsPreventsLogin(false));
 		return security.build();
 	}
 

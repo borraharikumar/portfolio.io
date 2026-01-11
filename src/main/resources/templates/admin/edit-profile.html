@@ -47,6 +47,7 @@
 		<form th:action="@{/admin/profile}" th:object="${profile}" method="post" enctype="multipart/form-data">
 			<!-- Hidden ID -->
 			<input type="hidden" th:field="*{id}" />
+			<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 			<div class="row">
 				<!-- Main Info -->
 				<div class="col-lg-8">
@@ -98,8 +99,9 @@
 								<input type="text" th:field="*{twitter}" class="form-control">
 							</div>
 							<!-- Profile Picture -->
+							<input type="hidden" th:field="*{profilePicUrl}" />
 							<div class="mb-3">
-								<label class="form-label">Profile Picture URL</label>
+								<label class="form-label">Profile Picture</label>
 								<input type="file" name="profilePic" class="form-control"
 									placeholder="Browse profile pic">
 							</div>

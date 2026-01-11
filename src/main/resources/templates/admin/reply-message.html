@@ -26,6 +26,7 @@
 						<p class="border p-2 rounded bg-light" th:text="${replyMessage.contactMessage.message}">Original Message</p>
 						<form th:action="@{/admin/messages/reply}" method="post" th:object="${replyMessage}">
 							<input type="hidden" th:field="*{contactMessage}" th:value="${replyMessage.contactMessage}" />
+							<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 							<div class="mb-3">
 								<label class="form-label">Reply</label>
 								<textarea th:field="*{content}" class="form-control" rows="5" required></textarea>
